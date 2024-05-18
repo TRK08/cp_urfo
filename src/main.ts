@@ -8,7 +8,7 @@ import App from './App.vue'
 import router from './router'
 
 // ant-design
-import Antd from 'ant-design-vue';
+import Antd from 'ant-design-vue'
 
 const app = createApp(App)
 
