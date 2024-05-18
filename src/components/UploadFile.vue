@@ -64,8 +64,8 @@ const loadZipArchive = async (file: any) => {
             }
         })
 
-        if (data) {
-            results.value.push(data)
+        if (data.results) {
+            results.value = [...data.results, ...results.value]
         }
 
         isLoading.value = false
