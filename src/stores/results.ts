@@ -17,7 +17,7 @@ export const useResultsStore = defineStore('results', {
   state: (): IState => {
     return {
       fetchStatus: 'init',
-      totalCounts: 1,
+      totalCounts: 0,
       countsByCategories: {} as IState['countsByCategories'],
       results: []
       // results: [

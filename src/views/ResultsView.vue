@@ -2,7 +2,7 @@
     <div class="results">
         <a-spin v-if="fetchStatus === 'loading'" size="large" style="margin: 0 auto; display: block" />
         <template v-else>
-            <EmptyFiles v-if="!results.length" />
+            <EmptyFiles v-if="!results?.length" />
             <div v-else>
                 <div class="result__charts" v-if="totalCounts">
                     <AppChart :counts="calculatePercentagesByCategories" title="Классификация по видам" />
