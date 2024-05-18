@@ -6,7 +6,7 @@ import VueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: 'cp_urfo',
+  base: '/cp_urfo/',
   plugins: [
     vue(),
     VueDevTools(),
