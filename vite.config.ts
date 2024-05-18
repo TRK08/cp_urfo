@@ -7,6 +7,10 @@ import VueDevTools from 'vite-plugin-vue-devtools'
 // https://vitejs.dev/config/
 export default defineConfig({
   base: '/',
+  preview: {
+    port: 3000,
+    host: true,
+  },
   plugins: [
     vue(),
     VueDevTools(),
