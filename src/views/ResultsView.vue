@@ -4,12 +4,12 @@
         <template v-else>
             <EmptyFiles v-if="!results.length" />
             <div v-else>
-                <!-- <div class="result__charts">
-                    <AppChart :counts="{0: 112893, 1: 112893, 2: 112893}" title="Классификация по видам" />
+                <div class="result__charts" v-if="totalCounts">
+                    <AppChart :counts="calculatePercentagesByCategories" title="Классификация по видам" />
                     <div class="result__charts-total">
-                        <a-statistic title="Всего распознанных изображений" :value="112893" />
+                        <a-statistic title="Всего распознанных изображений" :value="totalCounts" />
                     </div>
-                </div> -->
+                </div>
                 <div class="results__wrap">
                     <div class="result__filters">
                         <a-input v-model:value="searchValue" placeholder="Поиск" />
@@ -34,7 +34,7 @@ import { storeToRefs } from 'pinia'
 import { computed, onMounted, ref } from 'vue'
 
 const { fetchAll } = useResultsStore()
-const { results, fetchStatus } = storeToRefs(useResultsStore())
+const { results, fetchStatus, totalCounts, countsByCategories } = storeToRefs(useResultsStore())
 
 const searchValue = ref('')
 const filterByClass = ref<TDictClass | null>(null)
@@ -43,6 +43,19 @@ const reformattedClassDict = computed(() => {
     // @ts-ignore
     const array = Object.keys(CLASS_DICT).map((key) => ({ value: key, label: CLASS_DICT[key] }))
     return [{ value: null, label: 'Все' }, ...array]
+})
+
+const calculatePercentagesByCategories = computed(() => {
+    if (!countsByCategories) return {} as Record<TDictClass, number>
+
+    const result = {...countsByCategories.value}
+
+    Object.entries(countsByCategories.value).forEach(([key, value]) => {
+        // @ts-ignore
+        result[key] = Math.round((value / totalCounts.value) * 100)
+    })
+
+    return result
 })
 
 const sortedResults = computed(() => {

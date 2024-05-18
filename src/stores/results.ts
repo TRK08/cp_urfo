@@ -1,4 +1,5 @@
-import type { IResult } from '@/types'
+import type { IAllResults, IResult } from '@/types'
+import type { TDictClass } from '@/utilities'
 import axios from 'axios'
 import { defineStore } from 'pinia'
 
@@ -6,6 +7,8 @@ import { defineStore } from 'pinia'
 interface IState {
   fetchStatus: 'init' | 'loading'
   results: IResult[]
+  totalCounts: number
+  countsByCategories: Record<TDictClass, number>
 }
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
@@ -14,6 +17,8 @@ export const useResultsStore = defineStore('results', {
   state: (): IState => {
     return {
       fetchStatus: 'init',
+      totalCounts: 1,
+      countsByCategories: {} as IState['countsByCategories'],
       results: []
       // results: [
       //   {
@@ -72,10 +77,12 @@ export const useResultsStore = defineStore('results', {
       this.fetchStatus = 'loading'
 
       try {
-        const { data } = await axios.get(`${baseUrl}/getAll`)
+        const { data } = await axios.get<IAllResults>(`${baseUrl}/all`)
 
         if (data) {
-          this.results = data
+          this.results = data.results
+          this.totalCounts = data.totalCounts
+          this.countsByCategories = data.countsByCategories
         }
       } catch (error) {
         console.log(error)
